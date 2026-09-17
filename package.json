@@ -1,0 +1,44 @@
+{
+  "name": "@novacore/nova-landing",
+  "version": "0.1.0",
+  "private": true,
+  "description": "NovaCore Landing — a production-quality, reusable, SEO-first, bilingual landing-page foundation for customer demos, driven by Bootstrap/WCM configuration.",
+  "type": "module",
+  "packageManager": "yarn@4.17.1",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.7.1",
+    "@microsoft/signalr": "^8.0.7",
+    "@novacore/frontend-foundation": "file:../common/frontend-foundation",
+    "@novacore/frontend-next-mui": "file:../common/frontend-nextjs/packages/mui",
+    "@tanstack/react-query": "^5.65.0",
+    "lucide-react": "^0.475.0",
+    "next": "^15.1.6",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.85.0",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@types/node": "^22.10.7",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "eslint": "^9.19.0",
+    "eslint-config-next": "^15.1.6",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.9.0",
+    "typescript": "^5.7.3"
+  }
+}
