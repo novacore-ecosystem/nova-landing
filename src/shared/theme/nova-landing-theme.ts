@@ -18,3 +18,6 @@ export const NOVA_LANDING_THEME: ThemeConfig = {
   radius: "medium",
   density: "comfortable",
 };
+
+/** localStorage key the theme toggle persists the chosen mode under — see `theme-toggle.tsx` and `providers.tsx`'s lazy initial-state read (`ClientProvider` itself persists nothing). */
+export const THEME_MODE_STORAGE_KEY = "nova-landing.theme-mode";

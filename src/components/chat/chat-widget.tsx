@@ -6,6 +6,7 @@ import * as React from "react";
 
 import { useTranslation } from "@/i18n";
 import { useChat } from "@/features/chat/use-chat";
+import { useSessionStore } from "@/features/auth/store/session-store";
 
 /**
  * The one client component this whole subsystem needs — everything else (transport, analytics,
@@ -16,6 +17,8 @@ import { useChat } from "@/features/chat/use-chat";
 export function ChatWidget() {
   const { t } = useTranslation();
   const chat = useChat();
+  const sessionUser = useSessionStore((s) => s.user);
+  const isAuthenticated = useSessionStore((s) => s.status === "authenticated");
 
   const [name, setName] = React.useState("");
   const [phone, setPhone] = React.useState("");
@@ -27,12 +30,14 @@ export function ChatWidget() {
   if (chat.isRecovering) return null;
 
   async function handleStartConversation() {
-    if (!name.trim() || !phone.trim()) {
+    // Authenticated visitors are already identified by their session — no need to ask again
+    // (the guest form's name/phone requirement doesn't apply, see `SignalRChatTransport`).
+    if (!isAuthenticated && (!name.trim() || !phone.trim())) {
       setFormError(t("chat.form.nameAndPhoneRequired"));
       return;
     }
     setFormError(null);
-    await chat.startConversation({ displayName: name, phone, email, reason });
+    await chat.startConversation({ displayName: isAuthenticated ? (sessionUser?.name ?? "") : name, phone, email, reason });
   }
 
   async function handleSendMessage() {
@@ -55,9 +60,13 @@ export function ChatWidget() {
             {t("chat.intro.description")}
           </Text>
           <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-            <TextField placeholder={t("chat.form.namePlaceholder")} value={name} onChange={setName} />
-            <TextField placeholder={t("chat.form.phonePlaceholder")} value={phone} onChange={setPhone} type="tel" />
-            <TextField placeholder={t("chat.form.emailPlaceholder")} value={email} onChange={setEmail} type="email" />
+            {isAuthenticated ? null : (
+              <>
+                <TextField placeholder={t("chat.form.namePlaceholder")} value={name} onChange={setName} />
+                <TextField placeholder={t("chat.form.phonePlaceholder")} value={phone} onChange={setPhone} type="tel" />
+                <TextField placeholder={t("chat.form.emailPlaceholder")} value={email} onChange={setEmail} type="email" />
+              </>
+            )}
             <TextField placeholder={t("chat.form.reasonPlaceholder")} value={reason} onChange={setReason} />
             {formError ? (
               <Text size="bodySmall" color="error">

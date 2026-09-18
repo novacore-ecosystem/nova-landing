@@ -1,4 +1,5 @@
 import { accessibility } from "./accessibility";
+import { auth } from "./auth";
 import { chat } from "./chat";
 import { common } from "./common";
 import { footer } from "./footer";
@@ -15,4 +16,5 @@ export const en = {
   sections,
   chat,
   accessibility,
+  auth,
 };

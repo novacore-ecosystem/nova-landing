@@ -2,11 +2,13 @@ import { Footer, FooterColumn, Link, Text } from "@novacore/frontend-next-mui";
 
 import { getTranslator } from "@/i18n";
 import type { LandingLocale } from "@/i18n/locale";
+import { getBootstrap } from "@/shared/lib/bootstrap/get-bootstrap";
 
 /** Fully server-rendered — no interaction here needs a client boundary. */
-export function SiteFooter({ locale }: { locale: LandingLocale }) {
-  const t = getTranslator(locale);
-  const brand = t("common.brand.name");
+export async function SiteFooter({ locale }: { locale: LandingLocale }) {
+  const t = await getTranslator(locale);
+  const bootstrap = await getBootstrap();
+  const brand = bootstrap?.tenant?.name ?? t("common.brand.name");
   const year = new Date().getFullYear();
 
   return (

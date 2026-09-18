@@ -1,6 +1,6 @@
 "use client";
 
-import { createTranslator, DEFAULT_LOCALE, TRANSLATION_RESOURCES, type Translator } from "@novacore/frontend-foundation";
+import { createTranslator, DEFAULT_LOCALE, TRANSLATION_RESOURCES, type TranslationBundle, type Translator } from "@novacore/frontend-foundation";
 import * as React from "react";
 
 import { LANDING_TRANSLATIONS } from "./resources";
@@ -15,6 +15,8 @@ const I18nContext = React.createContext<I18nContextValue | null>(null);
 
 export interface I18nProviderProps {
   locale: LandingLocale;
+  /** Bootstrap-provided tenant translations (highest priority — see `get-translator.ts`'s `toTenantBundle`), read server-side and passed down since this provider is a client component and can't fetch Bootstrap itself. */
+  tenantTranslations?: TranslationBundle;
   children: React.ReactNode;
 }
 
@@ -25,14 +27,14 @@ export interface I18nProviderProps {
  * `LocaleSwitcher`), which keeps every page's content crawlable and correctly server-rendered per
  * locale instead of swapped client-side after hydration.
  */
-export function I18nProvider({ locale, children }: I18nProviderProps) {
+export function I18nProvider({ locale, tenantTranslations, children }: I18nProviderProps) {
   const value = React.useMemo<I18nContextValue>(() => {
     const t = createTranslator(
-      { application: LANDING_TRANSLATIONS, fallback: TRANSLATION_RESOURCES },
+      { tenant: tenantTranslations, application: LANDING_TRANSLATIONS, fallback: TRANSLATION_RESOURCES },
       { locale, fallbackLocale: DEFAULT_LOCALE, onMissingKey: "key" },
     );
     return { locale, t };
-  }, [locale]);
+  }, [locale, tenantTranslations]);
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }

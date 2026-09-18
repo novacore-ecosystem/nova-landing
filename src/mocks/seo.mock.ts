@@ -14,8 +14,8 @@ import type { LandingPageSeo } from "@/features/seo/types";
  * per page, a per-page robots override (today WCM only has one tenant-wide boolean), and hreflang/
  * alternate-locale links driven by real per-locale content rather than this mock's static copy.
  */
-export function getMockHomePageSeo(locale: LandingLocale): LandingPageSeo {
-  const t = getTranslator(locale);
+export async function getMockHomePageSeo(locale: LandingLocale): Promise<LandingPageSeo> {
+  const t = await getTranslator(locale);
 
   return {
     title: t("hero.headline"),

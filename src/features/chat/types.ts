@@ -13,7 +13,8 @@ export interface ChatMessage {
 
 export interface ChatSession {
   conversationId: string;
-  accessToken: string;
+  /** Set for the guest REST transport (Chat.API issues a short-lived guest token). Absent for the authenticated SignalR transport — auth rides the session's httpOnly cookie instead, see `SignalRChatTransport`. */
+  accessToken?: string;
 }
 
 export interface StartConversationInput {

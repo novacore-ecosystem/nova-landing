@@ -1,7 +1,9 @@
 import MuiBox from "@mui/material/Box";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Button, CTASection, FeatureGrid, HeroSection, StatsSection, TestimonialSection } from "@novacore/frontend-next-mui";
+import { Button, CTASection, FeatureGrid, StatsSection, TestimonialSection } from "@novacore/frontend-next-mui";
+
+import { HeroBackground } from "@/components/landing/sections/hero-background";
 
 import { getTranslator } from "@/i18n";
 import { isLandingLocale, LANDING_LOCALES } from "@/i18n/locale";
@@ -26,14 +28,14 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: HomePageProps): Promise<Metadata> {
   const { locale } = await params;
   if (!isLandingLocale(locale)) return {};
-  return buildMetadata(getMockHomePageSeo(locale), locale);
+  return buildMetadata(await getMockHomePageSeo(locale), locale);
 }
 
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   if (!isLandingLocale(locale)) notFound();
 
-  const t = getTranslator(locale);
+  const t = await getTranslator(locale);
 
   return (
     <main id="main-content">
@@ -42,7 +44,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
       <SiteHeader locale={locale} />
 
-      <HeroSection
+      <HeroBackground
         eyebrow={t("hero.eyebrow")}
         title={t("hero.headline")}
         description={t("hero.subheadline")}

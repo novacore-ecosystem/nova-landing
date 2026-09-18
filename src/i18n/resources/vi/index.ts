@@ -1,5 +1,6 @@
 import type { en } from "../en";
 import { accessibility } from "./accessibility";
+import { auth } from "./auth";
 import { chat } from "./chat";
 import { common } from "./common";
 import { footer } from "./footer";
@@ -15,4 +16,5 @@ export const vi = {
   sections,
   chat,
   accessibility,
+  auth,
 } satisfies typeof en;

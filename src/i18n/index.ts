@@ -1,4 +1,4 @@
-export { getTranslator } from "./get-translator";
+export { getTranslator, toTenantBundle } from "./get-translator";
 export { I18nProvider, useTranslation } from "./i18n-provider";
 export {
   DEFAULT_LOCALE,

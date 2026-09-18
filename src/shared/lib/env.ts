@@ -15,6 +15,12 @@ export const env = {
    * Bootstrap fetch — deployment config, not a per-user secret. See shared/lib/bootstrap/.
    */
   tenantClientKey: process.env.NEXT_PUBLIC_TENANT_CLIENT_KEY ?? "",
+  /**
+   * This App's stable Code (`X-App-Key` login/register/refresh-token header — see Auth's
+   * `LoginHandler.ResolveAppAsync`, same requirement nova-wcm's env module documents). Required
+   * for login/refresh to resolve which App a session belongs to.
+   */
+  appCode: process.env.NEXT_PUBLIC_APP_CODE ?? "",
   /** `ChatHub`'s SignalR endpoint — same derivation rationale as nova-wcm's env module. */
   chatHubUrl:
     process.env.NEXT_PUBLIC_CHAT_HUB_URL ??
