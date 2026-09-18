@@ -8,4 +8,12 @@ export const hero = {
   primaryCta: "Bắt đầu miễn phí",
   secondaryCta: "Xem demo",
   trustedByLabel: "Được tin dùng bởi",
+  media: {
+    alt: "Một nhóm cùng trao đổi bên bảng trắng trong văn phòng sáng sủa",
+    chatName: "Hỗ trợ Nova",
+    chatStatus: "Đang trực tuyến",
+    chatMessage: "Xin chào! Chúng tôi có thể giúp gì cho bạn hôm nay?",
+    statValue: "+248%",
+    statLabel: "khách hàng tiềm năng chất lượng hơn",
+  },
 } satisfies typeof en;

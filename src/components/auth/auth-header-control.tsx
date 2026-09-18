@@ -5,35 +5,27 @@ import { LogOut } from "lucide-react";
 import * as React from "react";
 
 import { useTranslation } from "@/i18n";
-import { useSessionStore } from "@/features/auth/store/session-store";
-import { useLogoutMutation } from "@/features/auth/api/auth.queries";
+import { authSession, useAuthSession } from "@/features/auth/use-auth-session";
 import { LoginModal } from "@/components/auth/login-modal";
 
 /**
  * The header's session-reactive slice — guest sees "Log in" (opens `LoginModal`), authenticated
- * sees their name + a logout control. Reads `useSessionStore` directly (no context), matching
- * nova-wcm/nova-console's convention (`usePermissionCheck` etc. do the same).
+ * sees their name + a logout control. State comes from `frontend-foundation`'s shared auth session.
  */
 export function AuthHeaderControl() {
   const { t } = useTranslation();
-  const status = useSessionStore((state) => state.status);
-  const user = useSessionStore((state) => state.user);
-  const logoutMutation = useLogoutMutation();
+  const { status, session, loading } = useAuthSession();
   const [loginOpen, setLoginOpen] = React.useState(false);
 
-  if (status === "authenticated" && user) {
+  if (status === "authenticated" && session) {
+    const name = session.user.displayName;
     return (
       <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Avatar size="sm" fallback={user.name.charAt(0).toUpperCase()} alt={user.name} />
+        <Avatar size="sm" fallback={name.charAt(0).toUpperCase()} alt={name} />
         <Text size="bodySmall" sx={{ display: { xs: "none", sm: "block" } }}>
-          {user.name}
+          {name}
         </Text>
-        <IconButton
-          size="sm"
-          onClick={() => logoutMutation.mutate()}
-          disabled={logoutMutation.isPending}
-          aria-label={t("auth.nav.logout")}
-        >
+        <IconButton size="sm" onClick={() => void authSession.logout()} disabled={loading} aria-label={t("auth.nav.logout")}>
           <LogOut size={16} />
         </IconButton>
       </Box>

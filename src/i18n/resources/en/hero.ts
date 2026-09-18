@@ -6,4 +6,12 @@ export const hero = {
   primaryCta: "Get started free",
   secondaryCta: "See it in action",
   trustedByLabel: "Trusted by teams at",
+  media: {
+    alt: "A team collaborating around a whiteboard in a bright office",
+    chatName: "Nova Support",
+    chatStatus: "Online now",
+    chatMessage: "Hi! How can we help you today?",
+    statValue: "+248%",
+    statLabel: "more qualified leads",
+  },
 };

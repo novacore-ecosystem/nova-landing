@@ -1,6 +1,11 @@
-import { Badge, Box, Button, Card, CardContent, CardFooter, CardHeader, Container, Grid, Heading, Section, Text } from "@novacore/frontend-next-mui";
+import MuiBox from "@mui/material/Box";
+import { Badge, Box, Button, Container, Grid, Heading, Text } from "@novacore/frontend-next-mui";
+import { Check } from "lucide-react";
 
+import { Surface } from "@/components/landing/visual/surface";
 import type { PricingPlan } from "@/mocks/pricing.mock";
+
+import { SectionIntro } from "./section-intro";
 
 export interface PricingSectionProps {
   eyebrow: string;
@@ -14,33 +19,32 @@ export interface PricingSectionProps {
 
 /**
  * A genuinely new section — `frontend-next-mui` ships no pricing component (confirmed absent
- * during research). Fully server-rendered: no pricing decision needs client JS. Kept as a
- * dedicated file since it's a real, independent composition, not a one-off page fragment.
+ * during research). Fully server-rendered: no pricing decision needs client JS. Uses a plain
+ * transparent `section` (not the library's opaque `Section`) so the page backdrop runs unbroken
+ * behind it; the highlighted plan gets a tinted, glowing surface instead of just a border.
  */
 export function PricingSection({ eyebrow, title, subtitle, perMonthLabel, mostPopularLabel, ctaLabel, plans }: PricingSectionProps) {
   return (
-    <Section padding="lg">
+    <MuiBox component="section" sx={{ py: { xs: 6, md: 10 } }}>
       <Container>
-        <Box sx={{ textAlign: "center", maxWidth: 640, mx: "auto" }}>
-          <Text size="bodySmall" weight="semibold" color="primary" sx={{ textTransform: "uppercase", letterSpacing: "0.08em" }}>
-            {eyebrow}
-          </Text>
-          <Heading size="h2" align="center" sx={{ mt: 1 }}>
-            {title}
-          </Heading>
-          <Text color="muted" align="center" sx={{ mt: 1.5 }}>
-            {subtitle}
-          </Text>
-        </Box>
+        <SectionIntro eyebrow={eyebrow} title={title} subtitle={subtitle} />
 
-        <Grid columns={{ xs: 1, md: 3 }} sx={{ mt: 6, alignItems: "stretch" }}>
+        <Grid columns={{ xs: 1, md: 3 }} gap={3} sx={{ alignItems: "stretch" }}>
           {plans.map((plan) => (
-            <Card
+            <Surface
               key={plan.id}
+              variant={plan.highlighted ? "tint" : "glass"}
               hoverable
-              sx={{ display: "flex", flexDirection: "column", border: "2px solid", borderColor: plan.highlighted ? "primary.main" : "divider" }}
+              sx={{
+                p: 3.5,
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                borderWidth: plan.highlighted ? 2 : 1,
+                borderColor: plan.highlighted ? "primary.main" : undefined,
+              }}
             >
-              <CardHeader>
+              <Box>
                 {plan.highlighted ? (
                   <Badge tone="primary" sx={{ mb: 1.5 }}>
                     {mostPopularLabel}
@@ -48,7 +52,7 @@ export function PricingSection({ eyebrow, title, subtitle, perMonthLabel, mostPo
                 ) : null}
                 <Heading size="h4">{plan.name}</Heading>
                 <Box sx={{ display: "flex", alignItems: "baseline", gap: 0.5, mt: 1 }}>
-                  <Text as="span" weight="bold" sx={{ fontSize: "2rem" }}>
+                  <Text as="span" weight="bold" sx={{ fontSize: "2.5rem", lineHeight: 1.1 }}>
                     {plan.price}
                   </Text>
                   <Text as="span" color="muted">
@@ -58,25 +62,24 @@ export function PricingSection({ eyebrow, title, subtitle, perMonthLabel, mostPo
                 <Text color="muted" sx={{ mt: 1 }}>
                   {plan.description}
                 </Text>
-              </CardHeader>
-              <CardContent sx={{ flex: 1 }}>
-                <Box as="ul" sx={{ m: 0, pl: 2.5, display: "flex", flexDirection: "column", gap: 1 }}>
-                  {plan.features.map((feature) => (
-                    <Box key={feature} as="li">
-                      <Text size="bodySmall">{feature}</Text>
-                    </Box>
-                  ))}
-                </Box>
-              </CardContent>
-              <CardFooter>
-                <Button fullWidth variant={plan.highlighted ? "primary" : "outline"}>
-                  {ctaLabel}
-                </Button>
-              </CardFooter>
-            </Card>
+              </Box>
+              <Box as="ul" sx={{ m: 0, p: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 1.25, flex: 1 }}>
+                {plan.features.map((feature) => (
+                  <Box key={feature} as="li" sx={{ display: "flex", alignItems: "center", gap: 1.25 }}>
+                    <MuiBox sx={{ color: "primary.main", display: "flex" }}>
+                      <Check size={16} />
+                    </MuiBox>
+                    <Text size="bodySmall">{feature}</Text>
+                  </Box>
+                ))}
+              </Box>
+              <Button fullWidth variant={plan.highlighted ? "primary" : "outline"}>
+                {ctaLabel}
+              </Button>
+            </Surface>
           ))}
         </Grid>
       </Container>
-    </Section>
+    </MuiBox>
   );
 }

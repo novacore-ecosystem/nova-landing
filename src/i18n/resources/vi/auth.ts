@@ -8,7 +8,11 @@ export const auth = {
     emailPlaceholder: "ban@vidu.com",
     password: "Mật khẩu",
     submit: "Đăng nhập",
-    genericError: "Đăng nhập không thành công — kiểm tra lại email và mật khẩu rồi thử lại.",
+  },
+  validation: {
+    emailRequired: "Vui lòng nhập email",
+    emailInvalid: "Email không hợp lệ",
+    passwordRequired: "Vui lòng nhập mật khẩu",
   },
   nav: {
     login: "Đăng nhập",

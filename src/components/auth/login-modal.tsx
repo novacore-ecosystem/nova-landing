@@ -6,7 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import { useTranslation } from "@/i18n";
 import { loginSchema, type LoginFormValues } from "@/features/auth/auth.schema";
-import { useLoginMutation } from "@/features/auth/api/auth.queries";
+import { authSession, useAuthSession } from "@/features/auth/use-auth-session";
 
 export interface LoginModalProps {
   open: boolean;
@@ -22,7 +22,7 @@ export interface LoginModalProps {
  */
 export function LoginModal({ open, onClose }: LoginModalProps) {
   const { t } = useTranslation();
-  const loginMutation = useLoginMutation();
+  const { loading, error } = useAuthSession();
 
   const {
     control,
@@ -35,13 +35,15 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
   });
 
   function handleClose() {
-    loginMutation.reset();
+    authSession.clearError();
     reset();
     onClose();
   }
 
   const onSubmit = handleSubmit((values) => {
-    loginMutation.mutate(values, { onSuccess: handleClose });
+    void authSession.login(values).then((session) => {
+      if (session) handleClose();
+    });
   });
 
   return (
@@ -51,7 +53,7 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
           {t("auth.login.description")}
         </Text>
         <Form onSubmit={onSubmit}>
-          <FormField label={t("auth.login.email")} htmlFor="login-email" error={errors.email?.message}>
+          <FormField label={t("auth.login.email")} htmlFor="login-email" error={errors.email?.message ? t(errors.email.message) : undefined}>
             <Controller
               name="email"
               control={control}
@@ -68,7 +70,7 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
               )}
             />
           </FormField>
-          <FormField label={t("auth.login.password")} htmlFor="login-password" error={errors.password?.message}>
+          <FormField label={t("auth.login.password")} htmlFor="login-password" error={errors.password?.message ? t(errors.password.message) : undefined}>
             <Controller
               name="password"
               control={control}
@@ -77,13 +79,13 @@ export function LoginModal({ open, onClose }: LoginModalProps) {
               )}
             />
           </FormField>
-          {loginMutation.isError ? (
+          {error ? (
             <Text size="bodySmall" color="error">
-              {t("auth.login.genericError")}
+              {error}
             </Text>
           ) : null}
           <DialogFooter>
-            <Button type="submit" loading={loginMutation.isPending}>
+            <Button type="submit" loading={loading}>
               {t("auth.login.submit")}
             </Button>
           </DialogFooter>

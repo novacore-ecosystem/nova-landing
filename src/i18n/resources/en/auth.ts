@@ -6,7 +6,11 @@ export const auth = {
     emailPlaceholder: "you@example.com",
     password: "Password",
     submit: "Log in",
-    genericError: "Couldn't log in — check your email and password and try again.",
+  },
+  validation: {
+    emailRequired: "Email is required",
+    emailInvalid: "Enter a valid email",
+    passwordRequired: "Password is required",
   },
   nav: {
     login: "Log in",

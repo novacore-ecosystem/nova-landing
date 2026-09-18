@@ -30,10 +30,21 @@ export class SignalRChatTransport implements ChatTransport {
   private connectPromise: Promise<RealtimeClient> | null = null;
   private readonly ownMessageIds = new Set<string>();
 
-  private ensureConnected(): Promise<RealtimeClient> {
+  private getClient(): RealtimeClient {
     this.client ??= createRealtimeClient({ hubUrl: env.chatHubUrl, withCredentials: true });
-    const client = this.client;
-    this.connectPromise ??= client.connect().then(() => client);
+    return this.client;
+  }
+
+  private ensureConnected(): Promise<RealtimeClient> {
+    const client = this.getClient();
+    this.connectPromise ??= client.connect().then(
+      () => client,
+      (error: unknown) => {
+        // Don't cache a failed attempt — a later call (e.g. starting a conversation) must retry.
+        this.connectPromise = null;
+        throw error;
+      },
+    );
     return this.connectPromise;
   }
 
@@ -53,22 +64,18 @@ export class SignalRChatTransport implements ChatTransport {
     return authenticatedChatService.getStatus(session.conversationId);
   }
 
+  /**
+   * Subscribes immediately (SignalR allows `on` before `start`) so a connection that only
+   * happens later — on `startConversation` — still delivers messages; no eager connect, nothing to
+   * fail unhandled when the hub is unreachable.
+   */
   onMessageReceived(handler: (content: string) => void): () => void {
-    let unsubscribed = false;
-    let unsubscribe: (() => void) | null = null;
-
-    void this.ensureConnected().then((client) => {
-      if (unsubscribed) return;
-      unsubscribe = client.forHub(ChatHub).subscribe("ReceiveMessage", (message) => {
+    return this.getClient()
+      .forHub(ChatHub)
+      .subscribe("ReceiveMessage", (message) => {
         if (this.ownMessageIds.delete(message.id)) return;
         handler(message.content);
       });
-    });
-
-    return () => {
-      unsubscribed = true;
-      unsubscribe?.();
-    };
   }
 
   /** Tears down the connection entirely — called on logout (see `use-chat.ts`), not on a single conversation ending. */

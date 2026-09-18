@@ -1106,23 +1106,23 @@ __metadata:
 
 "@novacore/frontend-foundation@file:../../../frontend-foundation::locator=%40novacore%2Ffrontend-next-mui%40file%3A..%2Fcommon%2Ffrontend-nextjs%2Fpackages%2Fmui%23..%2Fcommon%2Ffrontend-nextjs%2Fpackages%2Fmui%3A%3Ahash%3D1462d5%26locator%3D%2540novacore%252Fnova-landing%2540workspace%253A.":
   version: 0.1.0
-  resolution: "@novacore/frontend-foundation@file:../../../frontend-foundation#../../../frontend-foundation::hash=d69295&locator=%40novacore%2Ffrontend-next-mui%40file%3A..%2Fcommon%2Ffrontend-nextjs%2Fpackages%2Fmui%23..%2Fcommon%2Ffrontend-nextjs%2Fpackages%2Fmui%3A%3Ahash%3D1462d5%26locator%3D%2540novacore%252Fnova-landing%2540workspace%253A."
+  resolution: "@novacore/frontend-foundation@file:../../../frontend-foundation#../../../frontend-foundation::hash=1298ff&locator=%40novacore%2Ffrontend-next-mui%40file%3A..%2Fcommon%2Ffrontend-nextjs%2Fpackages%2Fmui%23..%2Fcommon%2Ffrontend-nextjs%2Fpackages%2Fmui%3A%3Ahash%3D1462d5%26locator%3D%2540novacore%252Fnova-landing%2540workspace%253A."
   dependencies:
     "@microsoft/signalr": "npm:^8.0.7"
     axios: "npm:^1.7.9"
     libphonenumber-js: "npm:^1.13.10"
-  checksum: 10c0/c5266702b43e5286aab81fa88409cb49c856d3bbae30c8b4917d313212a6297f11e9367854f84237519eeaa30f44353a6b34a43ed63ed92cb495d1625fcc8752
+  checksum: 10c0/f78fac6e8c02a1514d6590596753e899360473d4a1e4152a7c849551d4ddedb9b78ba90f45773a07ba0a49aa7e177b90d3aeb695a9a4c99ed01b9556aaf07f31
   languageName: node
   linkType: hard
 
 "@novacore/frontend-foundation@file:../common/frontend-foundation::locator=%40novacore%2Fnova-landing%40workspace%3A.":
   version: 0.1.0
-  resolution: "@novacore/frontend-foundation@file:../common/frontend-foundation#../common/frontend-foundation::hash=b42260&locator=%40novacore%2Fnova-landing%40workspace%3A."
+  resolution: "@novacore/frontend-foundation@file:../common/frontend-foundation#../common/frontend-foundation::hash=1298ff&locator=%40novacore%2Fnova-landing%40workspace%3A."
   dependencies:
     "@microsoft/signalr": "npm:^8.0.7"
     axios: "npm:^1.7.9"
     libphonenumber-js: "npm:^1.13.10"
-  checksum: 10c0/1790657037b141cbc8bfdacfe1441314279522ca3059f5b6b8327c5572582afe85e74c0dfca11d2ead75e67666027067a9549662bd7ee35533432f2eb8d84eec
+  checksum: 10c0/f78fac6e8c02a1514d6590596753e899360473d4a1e4152a7c849551d4ddedb9b78ba90f45773a07ba0a49aa7e177b90d3aeb695a9a4c99ed01b9556aaf07f31
   languageName: node
   linkType: hard
 

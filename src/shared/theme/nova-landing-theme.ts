@@ -13,11 +13,11 @@ import type { ThemeConfig } from "@novacore/frontend-next-mui/theme";
  */
 export const NOVA_LANDING_THEME: ThemeConfig = {
   preset: "indigo",
-  mode: "system",
+  mode: "light",
   style: "modern",
   radius: "medium",
   density: "comfortable",
 };
 
-/** localStorage key the theme toggle persists the chosen mode under — see `theme-toggle.tsx` and `providers.tsx`'s lazy initial-state read (`ClientProvider` itself persists nothing). */
+/** localStorage key the theme toggle persists the chosen mode under — see `theme-toggle.tsx` and `providers.tsx`'s post-mount restore (`ClientProvider` itself persists nothing). */
 export const THEME_MODE_STORAGE_KEY = "nova-landing.theme-mode";

@@ -1,3 +1,4 @@
+import { AUTH_COOKIE_NAMES, buildInitialAuthState } from "@novacore/frontend-foundation";
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
@@ -5,7 +6,6 @@ import { notFound } from "next/navigation";
 import { getTranslator, toTenantBundle } from "@/i18n";
 import { isLandingLocale, LANDING_LOCALES } from "@/i18n/locale";
 import { getBootstrap } from "@/shared/lib/bootstrap/get-bootstrap";
-import { AUTH_COOKIE_NAMES, buildInitialAuthState } from "@/shared/lib/auth/initial-auth-state";
 import { env } from "@/shared/lib/env";
 
 import "../globals.css";

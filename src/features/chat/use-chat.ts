@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { useSessionStore } from "@/features/auth/store/session-store";
+import { useAuthSession } from "@/features/auth/use-auth-session";
 import { ConsoleChatAnalytics } from "./analytics/chat-analytics";
 import { createLocalStorageChatSessionStorage } from "./session/chat-session-storage";
 import { useChatStore } from "./store/chat-store";
@@ -28,7 +28,7 @@ const sessionStorage = createLocalStorageChatSessionStorage();
  */
 export function useChat() {
   const state = useChatStore();
-  const sessionStatus = useSessionStore((s) => s.status);
+  const { status: sessionStatus } = useAuthSession();
   const transport = sessionStatus === "authenticated" ? signalRTransport : restTransport;
 
   // Recover a persisted guest session on mount (mirrors nova-wcm's GuestChatWidget recovery flow).

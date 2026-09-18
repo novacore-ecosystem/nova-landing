@@ -1,11 +1,20 @@
-import { createHttpClient, HttpError, HttpErrorKinds, isErrorResponse, type ApiResponse } from "@novacore/frontend-foundation";
+import { createHttpClient } from "@novacore/frontend-foundation";
 
 import { env } from "@/shared/lib/env";
 
-/** Single shared Axios-backed instance, mirroring nova-wcm's `shared/lib/api/client.ts`. Auth is HTTP-only cookies, not bearer tokens. Also used server-side (Bootstrap fetch) — the `document` guard below keeps that safe. */
+/**
+ * The app's single foundation `HttpClient`, configured the way `AuthEndpoints`' doc comment asks:
+ * cookie auth (`withCredentials`) plus the per-deployment `X-Tenant-Client-Key`/`X-App-Key` default
+ * headers. Also used server-side (Bootstrap fetch) — the `document` guard keeps that safe. Callers
+ * use `httpClient.execute(endpoint, request)`, which already unwraps the `ApiResponse` envelope.
+ */
 export const httpClient = createHttpClient({
   baseUrl: env.apiBaseUrl,
   withCredentials: true,
+  headers: {
+    "X-Tenant-Client-Key": env.tenantClientKey,
+    "X-App-Key": env.appCode,
+  },
   interceptors: [
     {
       onRequest(request) {
@@ -20,17 +29,3 @@ export const httpClient = createHttpClient({
     },
   ],
 });
-
-/** Unwraps the backend's unified envelope. `success: false` can arrive on an HTTP 200 — the HttpClient only throws for non-2xx, so this boundary is required for every real call. */
-export function unwrapApiResponse<T>(response: ApiResponse<T>): T {
-  if (isErrorResponse(response)) {
-    throw new HttpError({
-      kind: HttpErrorKinds.Api,
-      message: response.message,
-      code: response.messageCode ?? undefined,
-      details: response.details,
-    });
-  }
-
-  return response.data as T;
-}
